@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("classForm");
   const tableBody = document.querySelector("#classTable tbody");
 
-  // ✅ Form Submit Event - Sayfa yenilenmeden tabloya veri ekleme
+  // AI PROMPT : Form submit edildiğinde sayfa yenilenmeden tabloya veri nasıl eklenir?
   form.addEventListener("submit", function (event) {
     event.preventDefault();
 
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("Tüm alanları doldurun!");
       return;
     }
-
+    // AI PROMPT : Yeni tablo satırını dinamik olarak nasıl ekleyebilirim?
     const newRow = document.createElement("tr");
     newRow.innerHTML = `
             <td>${className}</td>
@@ -30,7 +30,8 @@ document.addEventListener("DOMContentLoaded", function () {
     form.reset();
   });
 
-  // ✅ Tabloya tıklanınca tüm verileri console’a yazdırma (Table Click Event)
+  // AI PROMPT: Tabloya tıklanınca tüm verileri JSON formatında nasıl yazdırabilirim? (ROW CLİCK EVENT 1.ÖZELLİK KULLANDIĞIM HOCAM ) (Table Click Event 2. ÖZELLİK KULLANDIĞIM HOCAM)
+
   document.getElementById("classTable").addEventListener("click", function () {
     let rows = document.querySelectorAll("#classTable tbody tr");
     let classList = [];
@@ -47,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("Current Table Data:", classList);
   });
 
-  // ✅ Satıra tıklanınca highlight ekleme (Row Click Event)
+  //AI PROMPT: Bir satıra tıklanınca stil değişikliği (highlight) nasıl eklenir?
   tableBody.addEventListener("click", function (event) {
     if (event.target.tagName === "TD") {
       let row = event.target.parentElement;
@@ -55,30 +56,39 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // ✅ Satır üzerine gelince geçici renk değişimi (Mouseover / Mouseout Events)
+  tableBody.addEventListener("click", function (event) {
+    if (event.target.tagName === "TD") {
+      let row = event.target.parentElement;
+      row.style.backgroundColor =
+        row.style.backgroundColor === "yellow" ? "" : "yellow";
+    }
+  });
+
+  //Mouseover Event kullandığım 3. özellik hocam
   tableBody.addEventListener("mouseover", function (event) {
     if (event.target.tagName === "TD") {
       event.target.parentElement.style.backgroundColor = "#f0f0f0";
     }
   });
 
+  //Mouseout Event kullandığım 4.özellik hocam
   tableBody.addEventListener("mouseout", function (event) {
     if (event.target.tagName === "TD") {
       event.target.parentElement.style.backgroundColor = "";
     }
   });
 
-  // 🔥 EKSTRA: Satıra çift tıklanınca satır silinsin (Double-click Event)
+  //SATIRA CİFT TIKLANINCA SİLİNMESİNİ SAGLAYAN KOD Double-click Event kullandığım 5.özellik hocam
   tableBody.addEventListener("dblclick", function (event) {
     if (event.target.tagName === "TD") {
       event.target.parentElement.remove();
     }
   });
 
-  // 🔥 Input Focus & Blur Events - Input'a tıklanınca stil değişimi
+  //AI PROMPT: Input alanına tıklanınca border rengini değiştirme işlemi nasıl yapılır? ( Input Focus Event 6.öZELLİK HOCAM VE  Input Blur Event 7. Özellik )
   document.querySelectorAll("input").forEach((input) => {
     input.addEventListener("focus", function () {
-      this.style.border = "2px solid blue";
+      this.style.border = "2px solid black";
     });
 
     input.addEventListener("blur", function () {
@@ -89,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // 🔥 Keyup Event - Canlı doğrulama
+  //AI PROMPT: Input içine canlı doğrulama (real-time validation) nasıl eklenir? Keyup/Keydown Event  kullandığım 8.özellik hocam
   document.getElementById("numPeople").addEventListener("keyup", function () {
     if (isNaN(this.value)) {
       this.style.border = "2px solid red";
