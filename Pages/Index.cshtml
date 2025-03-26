@@ -1,10 +1,60 @@
 ﻿@page
-@model IndexModel
-@{
-    ViewData["Title"] = "Home page";
-}
+@model Week5Lab.Pages.IndexModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-5">
+    <div class="row">
+        <!-- SOL TARAF: FORM -->
+        <div class="col-md-6">
+            <h3>Add New Class</h3>
+            <form method="post">
+                <div class="form-group mb-2">
+                    <label>Class Name</label>
+                    <input asp-for="NewClass.ClassName" class="form-control" />
+                </div>
+                <div class="form-group mb-2">
+                    <label>Student Count</label>
+                    <input asp-for="NewClass.StudentCount" class="form-control" />
+                </div>
+                <div class="form-group mb-2">
+                    <label>Description</label>
+                    <input asp-for="NewClass.Description" class="form-control" />
+                </div>
+                <button type="submit" asp-page-handler="Add" class="btn btn-primary">Add Class</button>
+            </form>
+        </div>
+
+        <!-- SAĞ TARAF: TABLO -->
+        <div class="col-md-6">
+            <h3>Class List</h3>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Class Name</th>
+                        <th>Student Count</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Week5Lab.Pages.IndexModel.ClassList)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.ClassName</td>
+                            <td>@item.StudentCount</td>
+                            <td>@item.Description</td>
+                            <td>
+                                <form method="post">
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <button type="submit" asp-page-handler="Delete" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
