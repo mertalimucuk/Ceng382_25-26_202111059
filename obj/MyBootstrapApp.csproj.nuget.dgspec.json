@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\MERT\\Desktop\\ceng382\\MyBootstrapApp\\MyBootstrapApp.csproj": {}
+    "C:\\Users\\MERT\\Desktop\\ceng382\\Ceng382_25-26_202111059\\MyBootstrapApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\MERT\\Desktop\\ceng382\\MyBootstrapApp\\MyBootstrapApp.csproj": {
+    "C:\\Users\\MERT\\Desktop\\ceng382\\Ceng382_25-26_202111059\\MyBootstrapApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\MERT\\Desktop\\ceng382\\MyBootstrapApp\\MyBootstrapApp.csproj",
+        "projectUniqueName": "C:\\Users\\MERT\\Desktop\\ceng382\\Ceng382_25-26_202111059\\MyBootstrapApp.csproj",
         "projectName": "MyBootstrapApp",
-        "projectPath": "C:\\Users\\MERT\\Desktop\\ceng382\\MyBootstrapApp\\MyBootstrapApp.csproj",
+        "projectPath": "C:\\Users\\MERT\\Desktop\\ceng382\\Ceng382_25-26_202111059\\MyBootstrapApp.csproj",
         "packagesPath": "C:\\Users\\MERT\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\MERT\\Desktop\\ceng382\\MyBootstrapApp\\obj\\",
+        "outputPath": "C:\\Users\\MERT\\Desktop\\ceng382\\Ceng382_25-26_202111059\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
