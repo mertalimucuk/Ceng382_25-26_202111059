@@ -13,20 +13,48 @@ namespace Week5Lab.Pages
         [BindProperty]
         public ClassInformationModel NewClass { get; set; }
 
+        // Edit modunda mıyız?
+        public bool IsEditing { get; set; }
+
+        // Düzenlenen öğenin ID’si
+        [BindProperty(SupportsGet = true)]
+        public int? SelectedId { get; set; }
+
         public void OnGet()
         {
-            // Sayfa yüklendiğinde yapılacak işlemler
+            if (SelectedId.HasValue)
+            {
+                var item = ClassList.FirstOrDefault(c => c.Id == SelectedId.Value);
+                if (item != null)
+                {
+                    NewClass = new ClassInformationModel
+                    {
+                        Id = item.Id,
+                        ClassName = item.ClassName,
+                        StudentCount = item.StudentCount,
+                        Description = item.Description
+                    };
+                    IsEditing = true;
+                }
+            }
         }
 
         public IActionResult OnPostAdd()
         {
-            // Otomatik ID
             NewClass.Id = ClassList.Count > 0 ? ClassList.Max(c => c.Id) + 1 : 1;
-
-            // Listeye ekle
             ClassList.Add(NewClass);
+            return RedirectToPage();
+        }
 
-            // Sayfayı yenile
+        public IActionResult OnPostUpdate()
+        {
+            var existing = ClassList.FirstOrDefault(c => c.Id == NewClass.Id);
+            if (existing != null)
+            {
+                existing.ClassName = NewClass.ClassName;
+                existing.StudentCount = NewClass.StudentCount;
+                existing.Description = NewClass.Description;
+            }
             return RedirectToPage();
         }
 
@@ -37,8 +65,19 @@ namespace Week5Lab.Pages
             {
                 ClassList.Remove(item);
             }
+
+            // ID’leri sıfırla (1, 2, 3 şeklinde yeniden sırala)
+            for (int i = 0; i < ClassList.Count; i++)
+            {
+                ClassList[i].Id = i + 1;
+            }
+
             return RedirectToPage();
+        }
+
+        public IActionResult OnPostEdit(int id)
+        {
+            return RedirectToPage(new { SelectedId = id });
         }
     }
 }
-
