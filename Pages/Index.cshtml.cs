@@ -13,13 +13,15 @@ namespace Week5Lab.Pages
         [BindProperty]
         public ClassInformationModel NewClass { get; set; }
 
-        // Edit modunda mıyız?
+        // Edit modu
         public bool IsEditing { get; set; }
 
         // Düzenlenen öğenin ID’si
         [BindProperty(SupportsGet = true)]
         public int? SelectedId { get; set; }
 
+
+        
         public void OnGet()
         {
             if (SelectedId.HasValue)
@@ -38,14 +40,14 @@ namespace Week5Lab.Pages
                 }
             }
         }
-
+         //AI PROMPT: ADD A NEW CLASS WİTH PROVİDED DETAİLS
         public IActionResult OnPostAdd()
         {
             NewClass.Id = ClassList.Count > 0 ? ClassList.Max(c => c.Id) + 1 : 1;
             ClassList.Add(NewClass);
             return RedirectToPage();
         }
-
+        //AI PROMPT : UPDATE THE CLASS WİTH ID USİNG THE NEW FORM VALUES
         public IActionResult OnPostUpdate()
         {
             var existing = ClassList.FirstOrDefault(c => c.Id == NewClass.Id);
@@ -58,6 +60,7 @@ namespace Week5Lab.Pages
             return RedirectToPage();
         }
 
+        // AI Prompt: "Delete the class with ID  and reorder the remaining class IDs."
         public IActionResult OnPostDelete(int id)
         {
             var item = ClassList.FirstOrDefault(c => c.Id == id);

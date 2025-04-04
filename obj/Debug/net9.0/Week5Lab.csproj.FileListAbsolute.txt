@@ -95,4 +95,4 @@ C:\Users\MERT\Desktop\ceng382\Ceng382_25-26_202111059\obj\Debug\net9.0\refint\We
 C:\Users\MERT\Desktop\ceng382\Ceng382_25-26_202111059\obj\Debug\net9.0\Week5Lab.pdb
 C:\Users\MERT\Desktop\ceng382\Ceng382_25-26_202111059\obj\Debug\net9.0\Week5Lab.genruntimeconfig.cache
 C:\Users\MERT\Desktop\ceng382\Ceng382_25-26_202111059\obj\Debug\net9.0\ref\Week5Lab.dll
-C:\Users\MERT\Desktop\ceng382\Ceng382_25-26_202111059\obj\Debug\net9.0\compressed\o6wx5gpyc9-431axbemlt.gz
+C:\Users\MERT\Desktop\ceng382\cENG382_25-26_202111059\obj\Debug\net9.0\compressed\o6wx5gpyc9-d07o6gmict.gz
