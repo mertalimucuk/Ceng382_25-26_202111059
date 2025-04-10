@@ -26,9 +26,12 @@ namespace Week5Lab.Pages
         [BindProperty(SupportsGet = true)]
         public int? SelectedId { get; set; }
 
+        // ✅ Selected columns (binded from form)
+        [BindProperty]
+        public List<string> SelectedColumns { get; set; } = new();
+
         public void OnGet()
         {
-            // 🆕 Sahte veri oluştur (veri yoksa)
             SeedData();
 
             if (SelectedId.HasValue)
@@ -48,6 +51,7 @@ namespace Week5Lab.Pages
             }
 
             var query = ClassList.AsQueryable();
+
             if (!string.IsNullOrWhiteSpace(SearchTerm))
             {
                 query = query.Where(c => c.ClassName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase));
@@ -108,7 +112,6 @@ namespace Week5Lab.Pages
             return RedirectToPage(new { SelectedId = id });
         }
 
-        // ✅ YENİ: İlk 100 kaydı otomatik oluşturur
         public void SeedData()
         {
             if (ClassList.Count >= 100) return;
@@ -125,5 +128,31 @@ namespace Week5Lab.Pages
                 });
             }
         }
+
+        // ✅ Export all
+        public IActionResult OnPostExport()
+{
+    SeedData(); // Veri garanti olsun
+
+    // Aramayı uygula
+    var query = ClassList.AsQueryable();
+
+    if (!string.IsNullOrWhiteSpace(SearchTerm))
+    {
+        query = query.Where(c => c.ClassName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase));
+    }
+
+    // Sadece aktif sayfa
+    var paged = query
+        .Skip((PageNumber - 1) * PageSize)
+        .Take(PageSize)
+        .ToList();
+
+    // JSON'a dönüştür
+    var json = Utils.Instance.ExportToJson(paged);
+    var bytes = System.Text.Encoding.UTF8.GetBytes(json);
+    return File(bytes, "application/json", "paged_export.json");
+}
+
     }
 }

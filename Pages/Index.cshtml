@@ -3,14 +3,14 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 <div class="container mt-5 p-4 card-blur">
-    <!-- Filter Form -->
+    <!-- Filter -->
     <form method="get" class="mb-4 d-flex">
         <input type="text" name="SearchTerm" value="@Model.SearchTerm" placeholder="Search class name..." class="form-control me-2" />
         <button type="submit" class="btn btn-primary">Filter</button>
     </form>
 
     <div class="row">
-        <!-- SOL TARAF: FORM -->
+        <!-- Left: Add/Edit Form -->
         <div class="col-md-6">
             <h3>@(Model.IsEditing ? "Edit Class" : "Add New Class")</h3>
             <form method="post">
@@ -33,7 +33,7 @@
             </form>
         </div>
 
-        <!-- SAĞ TARAF: TABLO -->
+        <!-- Right: Table + Export -->
         <div class="col-md-6">
             <h3>Class List</h3>
             <table class="table table-bordered">
@@ -51,8 +51,7 @@
                         var originalItem = Week5Lab.Pages.IndexModel.ClassList.FirstOrDefault(c =>
                             c.ClassName == item.ClassName &&
                             c.Description == item.Description &&
-                            c.StudentCount == item.StudentCount
-                        );
+                            c.StudentCount == item.StudentCount);
 
                         <tr>
                             <td>@item.ClassName</td>
@@ -76,31 +75,55 @@
                     }
                 </tbody>
             </table>
-        <!-- TABLO SONRASI -->
-<div class="mt-3 d-flex justify-content-between align-items-center">
-    <!-- Prev butonu -->
-    <a asp-page="./Index"
-       asp-route-SearchTerm="@Model.SearchTerm"
-       asp-route-PageNumber="@(Model.PageNumber - 1)"
-       class="btn btn-outline-secondary @(Model.PageNumber <= 1 ? "disabled" : "")">
-        Previous
-    </a>
 
-    <!-- Sayfa bilgisi -->
-    <span>Page @Model.PageNumber of @Model.TotalPages</span>
+            <!-- Export buttons -->
+<div class="d-flex gap-2 mb-3">
+    <form method="post" asp-page-handler="Export">
+        <button type="submit" class="btn btn-primary">Export All JSON</button>
+    </form>
 
-    <!-- Next butonu -->
-    <a asp-page="./Index"
-       asp-route-SearchTerm="@Model.SearchTerm"
-       asp-route-PageNumber="@(Model.PageNumber + 1)"
-       class="btn btn-outline-secondary @(Model.PageNumber >= Model.TotalPages ? "disabled" : "")">
-        Next
-    </a>
+    <form method="post" asp-page-handler="ExportFiltered">
+        <div class="d-flex align-items-center gap-3 flex-wrap">
+            <span class="fw-semibold">Select columns to export:</span>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="SelectedColumns" value="ClassName" checked />
+                <label class="form-check-label">Class Name</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="SelectedColumns" value="StudentCount" checked />
+                <label class="form-check-label">Student Count</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="SelectedColumns" value="Description" checked />
+                <label class="form-check-label">Description</label>
+            </div>
+
+            <button type="submit" class="btn btn-secondary">Export Filtered</button>
+        </div>
+    </form>
 </div>
 
-            
 
-            <!-- Pagination -->
+            <!-- Pagination Controls -->
+            <div class="mt-3 d-flex justify-content-between align-items-center">
+                <a asp-page="./Index"
+                   asp-route-SearchTerm="@Model.SearchTerm"
+                   asp-route-PageNumber="@(Model.PageNumber - 1)"
+                   class="btn btn-outline-secondary @(Model.PageNumber <= 1 ? "disabled" : "")">
+                    Previous
+                </a>
+
+                <span>Page @Model.PageNumber of @Model.TotalPages</span>
+
+                <a asp-page="./Index"
+                   asp-route-SearchTerm="@Model.SearchTerm"
+                   asp-route-PageNumber="@(Model.PageNumber + 1)"
+                   class="btn btn-outline-secondary @(Model.PageNumber >= Model.TotalPages ? "disabled" : "")">
+                    Next
+                </a>
+            </div>
+
             @if (Model.TotalPages > 1)
             {
                 <nav>
