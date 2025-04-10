@@ -26,9 +26,10 @@ namespace Week5Lab.Pages
         [BindProperty(SupportsGet = true)]
         public int? SelectedId { get; set; }
 
+        private static bool isSeeded = false;
+
         public void OnGet()
         {
-            // 🆕 Sahte veri oluştur (veri yoksa)
             SeedData();
 
             if (SelectedId.HasValue)
@@ -47,14 +48,24 @@ namespace Week5Lab.Pages
                 }
             }
 
+            // AI PROMPT : veri listem üzerinde filtreleme yapmamın kısa yolu nedir ?
             var query = ClassList.AsQueryable();
+
             if (!string.IsNullOrWhiteSpace(SearchTerm))
             {
-                query = query.Where(c => c.ClassName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase));
+                query = query.Where(c =>
+                    c.ClassName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
+                    c.Description.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
+                    c.StudentCount.ToString().Contains(SearchTerm)
+                );
             }
 
+            // AI PROMPT: Arama sonrası sayfa numarası sınırları kontrolünü nasıl sağlarım
             TotalPages = (int)Math.Ceiling(query.Count() / (double)PageSize);
+            if (PageNumber < 1) PageNumber = 1;
+            if (PageNumber > TotalPages) PageNumber = TotalPages;
 
+            
             var paged = query
                 .Skip((PageNumber - 1) * PageSize)
                 .Take(PageSize)
@@ -95,9 +106,11 @@ namespace Week5Lab.Pages
                 ClassList.Remove(item);
             }
 
+            // AI PROMPT: ID ve ClassName’leri yeniden nasıl sıralarım
             for (int i = 0; i < ClassList.Count; i++)
             {
                 ClassList[i].Id = i + 1;
+                ClassList[i].ClassName = $"Class {i + 1}";
             }
 
             return RedirectToPage();
@@ -108,10 +121,9 @@ namespace Week5Lab.Pages
             return RedirectToPage(new { SelectedId = id });
         }
 
-        // ✅ YENİ: İlk 100 kaydı otomatik oluşturur
         public void SeedData()
         {
-            if (ClassList.Count >= 100) return;
+            if (isSeeded || ClassList.Any()) return;
 
             var rnd = new Random();
             for (int i = 1; i <= 100; i++)
@@ -124,6 +136,8 @@ namespace Week5Lab.Pages
                     Description = $"Description for Class {i}"
                 });
             }
+
+            isSeeded = true;
         }
     }
 }
