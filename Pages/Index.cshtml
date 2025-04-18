@@ -77,32 +77,30 @@
                 </tbody>
             </table>
 
-            <!-- Export Buttons -->
+           <!-- Export Bölümü (tek buton olacak şekilde düzenlendi) -->
             <div class="d-flex gap-2 mb-3">
-                <form method="post" asp-page-handler="Export">
-                    <input type="hidden" name="PageNumber" value="@Model.PageNumber" />
-                    <button type="submit" class="btn btn-primary">Export All JSON</button>
-                </form>
 
-                <form method="post" asp-page-handler="ExportFiltered">
-                    <input type="hidden" name="PageNumber" value="@Model.PageNumber" />
+            <form method="post" asp-page-handler="ExportFiltered">
+            <input type="hidden" name="PageNumber" value="@Model.PageNumber" />
 
-                    <div class="d-flex flex-column gap-2">
-                        <span class="fw-semibold text-white">Select columns to export:</span>
+            <div class="d-flex flex-column gap-2">
+            <span class="fw-semibold text-white">Select columns to export:</span>
 
-                        <div class="d-flex gap-2 flex-wrap">
-                            <button type="button" class="btn btn-outline-primary toggle-column" data-column="ClassName">Class Name</button>
-                            <button type="button" class="btn btn-outline-primary toggle-column" data-column="StudentCount">Student Count</button>
-                            <button type="button" class="btn btn-outline-primary toggle-column" data-column="Description">Description</button>
-                        </div>
-
-                        <div id="selectedColumnsContainer"></div>
-
-                        <button type="submit" class="btn btn-export-filtered mt-2">Export Filtered</button>
-
-                    </div>
-                </form>
+            <div class="d-flex gap-2 flex-wrap">
+                <button type="button" class="btn btn-outline-primary toggle-column" data-column="ClassName">Class Name</button>
+                <button type="button" class="btn btn-outline-primary toggle-column" data-column="StudentCount">Student Count</button>
+                <button type="button" class="btn btn-outline-primary toggle-column" data-column="Description">Description</button>
             </div>
+
+            <div id="selectedColumnsContainer"></div>
+
+            
+            <button type="submit" class="btn btn-primary mt-2">Export All JSON</button>
+        </div>
+        </form>
+
+         </div>
+
 
             <!-- Pagination -->
             <div class="mt-3 d-flex justify-content-between align-items-center">
@@ -139,8 +137,10 @@
         </div>
     </div>
 </div>
-
+ <!-- AI PROMPT: Kullanıcının butonlara tıklayarak kolonları seçmesini sağlayan bir JavaScript sistemi nasıl yazabilirim. 
+      Seçilen kolonları form ile post ederken gizli inputlara aktar ve sadece seçilen kolonları backend'e gönder.-->
 @section Scripts {
+    
     <script>
         const selectedColumns = new Set(["ClassName", "StudentCount", "Description"]);
         const container = document.getElementById("selectedColumnsContainer");

@@ -126,7 +126,7 @@ namespace Week5Lab.Pages
             return RedirectToPage(new { SelectedId = id });
         }
 
-        // Sadece ilk açılışta çağrılır, bir daha asla
+        // Sadece ilk açılışta çağrılır, bir daha asla çağrılmaz
         public void SeedData()
         {
             if (ClassList.Count > 0) return; // zaten doluysa basma
@@ -144,35 +144,18 @@ namespace Week5Lab.Pages
             }
         }
 
-        public IActionResult OnPostExport()
-        {
-            var query = ClassList.AsQueryable();
-
-            if (!string.IsNullOrWhiteSpace(SearchTerm))
-            {
-                query = query.Where(c => c.ClassName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase));
-            }
-
-            var paged = query
-                .Skip((PageNumber - 1) * PageSize)
-                .Take(PageSize)
-                .ToList();
-
-            var json = Utils.Instance.ExportToJson(paged);
-            var bytes = System.Text.Encoding.UTF8.GetBytes(json);
-            return File(bytes, "application/json", "paged_export.json");
-        }
-
-         //AI PROMPT: GEREKLİ SAYFAMDA SEÇİLEN KOLONLARI JSON OLARAK NASIL EXPORT EDEBİLİRİM ?   
+        //AI PROMPT: GEREKLİ SAYFAMDA SEÇİLEN KOLONLARI JSON OLARAK NASIL EXPORT EDEBİLİRİM ?   
         public IActionResult OnPostExportFiltered()
         {
             var query = ClassList.AsQueryable();
 
+            // AI PROMPT: Search filtresi varsa sadece eşleşenleri al
             if (!string.IsNullOrWhiteSpace(SearchTerm))
             {
                 query = query.Where(c => c.ClassName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase));
             }
 
+            // AI PROMPT: Sayfalama uygulanarak sadece o anki sayfanın verileri alınır
             var paged = query
                 .Skip((PageNumber - 1) * PageSize)
                 .Take(PageSize)
@@ -184,6 +167,7 @@ namespace Week5Lab.Pages
                 })
                 .ToList();
 
+            // AI PROMPT: Seçilen kolonlara göre export yapılır
             var json = Utils.Instance.ExportToJson(paged, SelectedColumns);
             var bytes = System.Text.Encoding.UTF8.GetBytes(json);
             return File(bytes, "application/json", "filtered_export.json");
