@@ -9,6 +9,14 @@
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
+      "Id": "C:\\Users\\MERT\\Desktop\\ceng382\\Ceng382_25-26_202111059\\wwwroot\\data\\user.json",
+      "PackagePath": "staticwebassets\\data\\user.json"
+    },
+    {
+      "Id": "C:\\Users\\MERT\\Desktop\\ceng382\\Ceng382_25-26_202111059\\wwwroot\\data\\users.json",
+      "PackagePath": "staticwebassets\\data\\users.json"
+    },
+    {
       "Id": "C:\\Users\\MERT\\Desktop\\ceng382\\Ceng382_25-26_202111059\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
     },

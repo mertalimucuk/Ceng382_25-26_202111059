@@ -1,0 +1,26 @@
+@page
+@model Week5Lab.Pages.LoginModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div class="container mt-5">
+    <h2>Login</h2>
+
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger">@Model.ErrorMessage</div>
+    }
+
+    <form method="post">
+        <div class="form-group mb-2">
+            <label>Username</label>
+            <input asp-for="Username" class="form-control" />
+        </div>
+
+        <div class="form-group mb-2">
+            <label>Password</label>
+            <input asp-for="Password" type="password" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+</div>

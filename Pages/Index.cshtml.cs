@@ -26,12 +26,23 @@ namespace Week5Lab.Pages
         [BindProperty(SupportsGet = true)]
         public int? SelectedId { get; set; }
 
-        // ✅ Selected columns (binded from form)
         [BindProperty]
         public List<string> SelectedColumns { get; set; } = new();
 
-        public void OnGet()
+        // 👤 Kullanıcı oturum bilgileri
+        public string? Username { get; set; }
+        public string? Section { get; set; }
+        public string? SessionId { get; set; } // ✅ Session ID (seşin bilgisi)
+
+        public IActionResult OnGet()
         {
+            Username = HttpContext.Session.GetString("Username");
+            Section = HttpContext.Session.GetString("Section");
+            SessionId = HttpContext.Session.Id; // 👈 Session ID burada alındı
+
+            if (string.IsNullOrEmpty(Username))
+                return RedirectToPage("/Login");
+
             SeedData();
 
             if (SelectedId.HasValue)
@@ -70,6 +81,8 @@ namespace Week5Lab.Pages
                 StudentCount = c.StudentCount,
                 Description = c.Description
             }).ToList();
+
+            return Page();
         }
 
         public IActionResult OnPostAdd()
@@ -112,6 +125,12 @@ namespace Week5Lab.Pages
             return RedirectToPage(new { SelectedId = id });
         }
 
+        public IActionResult OnPostLogout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToPage("/Login");
+        }
+
         public void SeedData()
         {
             if (ClassList.Count >= 100) return;
@@ -129,30 +148,25 @@ namespace Week5Lab.Pages
             }
         }
 
-        // ✅ Export all
         public IActionResult OnPostExport()
-{
-    SeedData(); // Veri garanti olsun
+        {
+            SeedData();
 
-    // Aramayı uygula
-    var query = ClassList.AsQueryable();
+            var query = ClassList.AsQueryable();
 
-    if (!string.IsNullOrWhiteSpace(SearchTerm))
-    {
-        query = query.Where(c => c.ClassName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase));
-    }
+            if (!string.IsNullOrWhiteSpace(SearchTerm))
+            {
+                query = query.Where(c => c.ClassName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase));
+            }
 
-    // Sadece aktif sayfa
-    var paged = query
-        .Skip((PageNumber - 1) * PageSize)
-        .Take(PageSize)
-        .ToList();
+            var paged = query
+                .Skip((PageNumber - 1) * PageSize)
+                .Take(PageSize)
+                .ToList();
 
-    // JSON'a dönüştür
-    var json = Utils.Instance.ExportToJson(paged);
-    var bytes = System.Text.Encoding.UTF8.GetBytes(json);
-    return File(bytes, "application/json", "paged_export.json");
-}
-
+            var json = Utils.Instance.ExportToJson(paged);
+            var bytes = System.Text.Encoding.UTF8.GetBytes(json);
+            return File(bytes, "application/json", "paged_export.json");
+        }
     }
 }
