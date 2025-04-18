@@ -10,14 +10,40 @@
     <link rel="stylesheet" href="~/Week5Lab.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    
+
+    <style>
+    /* Aktif sayfa numarası kahverengi */
+    .pagination .page-item.active .page-link {
+        background-color: #8B4513 !important;
+        border-color: #8B4513 !important;
+        color: white !important;
+    }
+
+    /* Diğer sayfa linkleri (normal) siyah */
+    .pagination .page-link {
+        color: black;
+    }
+
+    /* Export Filtered butonu kahverengi */
+    .btn-export-filtered {
+        background-color: #8B4513;
+        color: white;
+        border: none;
+    }
+
+    .btn-export-filtered:hover {
+        background-color: #A0522D;
+        color: white;
+    }
+</style>
 
 </head>
+
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">Week5Lab</a>
+                <a class="navbar-brand" asp-area="" asp-page="/Index">Week7Lab</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>

@@ -26,13 +26,12 @@ namespace Week5Lab.Pages
         [BindProperty(SupportsGet = true)]
         public int? SelectedId { get; set; }
 
-        // ✅ Selected columns (binded from form)
         [BindProperty]
         public List<string> SelectedColumns { get; set; } = new();
 
         public void OnGet()
         {
-            SeedData();
+            SeedData(); //  sadece ilk girişte çağrılıyor
 
             if (SelectedId.HasValue)
             {
@@ -51,19 +50,19 @@ namespace Week5Lab.Pages
             }
 
             var query = ClassList.AsQueryable();
-
+            //AI PROMPT:Sitemin serch kısmında ARAMA KELİMESİNE UYGUN OLARAK FİLTRELEME NASIL YAPABİİRİM ?
             if (!string.IsNullOrWhiteSpace(SearchTerm))
             {
                 query = query.Where(c => c.ClassName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase));
             }
 
             TotalPages = (int)Math.Ceiling(query.Count() / (double)PageSize);
-
+            //AI Prompt : Kendi sayfamda bulunduğum sayfanın verilerini nasıl alabilirim ?
             var paged = query
                 .Skip((PageNumber - 1) * PageSize)
                 .Take(PageSize)
                 .ToList();
-
+            
             FilteredList = paged.Select(c => new ClassInformationTable
             {
                 ClassName = c.ClassName,
@@ -88,7 +87,9 @@ namespace Week5Lab.Pages
                 existing.StudentCount = NewClass.StudentCount;
                 existing.Description = NewClass.Description;
             }
-            return RedirectToPage();
+
+            // AI PROMPT: AramA FİLTRESİNİ koruyarak sayfayı yeniden nasıl yükleyebilirim.
+            return RedirectToPage(new { SearchTerm });
         }
 
         public IActionResult OnPostDelete(int id)
@@ -99,12 +100,25 @@ namespace Week5Lab.Pages
                 ClassList.Remove(item);
             }
 
+            // ID'leri yeniden sırala
             for (int i = 0; i < ClassList.Count; i++)
             {
                 ClassList[i].Id = i + 1;
             }
 
-            return RedirectToPage();
+            //AI PROMPT: SAYFA SAYISI GÜNCELLEMESİ SONRASI SAYFA SINIRIMI NASIL KORUYABİLİRİM ?
+            var filteredCount = ClassList
+                .Where(c => string.IsNullOrWhiteSpace(SearchTerm) || c.ClassName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase))
+                .Count();
+
+            int totalPages = (int)Math.Ceiling(filteredCount / (double)PageSize);
+
+            if (PageNumber > totalPages)
+            {
+                PageNumber = totalPages;
+            }
+
+            return RedirectToPage(new { PageNumber, SearchTerm });
         }
 
         public IActionResult OnPostEdit(int id)
@@ -112,9 +126,10 @@ namespace Week5Lab.Pages
             return RedirectToPage(new { SelectedId = id });
         }
 
+        // Sadece ilk açılışta çağrılır, bir daha asla
         public void SeedData()
         {
-            if (ClassList.Count >= 100) return;
+            if (ClassList.Count > 0) return; // zaten doluysa basma
 
             var rnd = new Random();
             for (int i = 1; i <= 100; i++)
@@ -129,30 +144,49 @@ namespace Week5Lab.Pages
             }
         }
 
-        // ✅ Export all
         public IActionResult OnPostExport()
-{
-    SeedData(); // Veri garanti olsun
+        {
+            var query = ClassList.AsQueryable();
 
-    // Aramayı uygula
-    var query = ClassList.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(SearchTerm))
+            {
+                query = query.Where(c => c.ClassName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase));
+            }
 
-    if (!string.IsNullOrWhiteSpace(SearchTerm))
-    {
-        query = query.Where(c => c.ClassName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase));
-    }
+            var paged = query
+                .Skip((PageNumber - 1) * PageSize)
+                .Take(PageSize)
+                .ToList();
 
-    // Sadece aktif sayfa
-    var paged = query
-        .Skip((PageNumber - 1) * PageSize)
-        .Take(PageSize)
-        .ToList();
+            var json = Utils.Instance.ExportToJson(paged);
+            var bytes = System.Text.Encoding.UTF8.GetBytes(json);
+            return File(bytes, "application/json", "paged_export.json");
+        }
 
-    // JSON'a dönüştür
-    var json = Utils.Instance.ExportToJson(paged);
-    var bytes = System.Text.Encoding.UTF8.GetBytes(json);
-    return File(bytes, "application/json", "paged_export.json");
-}
+         //AI PROMPT: GEREKLİ SAYFAMDA SEÇİLEN KOLONLARI JSON OLARAK NASIL EXPORT EDEBİLİRİM ?   
+        public IActionResult OnPostExportFiltered()
+        {
+            var query = ClassList.AsQueryable();
 
+            if (!string.IsNullOrWhiteSpace(SearchTerm))
+            {
+                query = query.Where(c => c.ClassName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase));
+            }
+
+            var paged = query
+                .Skip((PageNumber - 1) * PageSize)
+                .Take(PageSize)
+                .Select(c => new ClassInformationTable
+                {
+                    ClassName = c.ClassName,
+                    StudentCount = c.StudentCount,
+                    Description = c.Description
+                })
+                .ToList();
+
+            var json = Utils.Instance.ExportToJson(paged, SelectedColumns);
+            var bytes = System.Text.Encoding.UTF8.GetBytes(json);
+            return File(bytes, "application/json", "filtered_export.json");
+        }
     }
 }

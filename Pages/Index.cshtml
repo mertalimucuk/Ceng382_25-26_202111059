@@ -3,14 +3,8 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 <div class="container mt-5 p-4 card-blur">
-    <!-- Filter -->
-    <form method="get" class="mb-4 d-flex">
-        <input type="text" name="SearchTerm" value="@Model.SearchTerm" placeholder="Search class name..." class="form-control me-2" />
-        <button type="submit" class="btn btn-primary">Filter</button>
-    </form>
-
     <div class="row">
-        <!-- Left: Add/Edit Form -->
+        <!-- Left Column: Add/Edit Form -->
         <div class="col-md-6">
             <h3>@(Model.IsEditing ? "Edit Class" : "Add New Class")</h3>
             <form method="post">
@@ -33,8 +27,15 @@
             </form>
         </div>
 
-        <!-- Right: Table + Export -->
+        <!-- Right Column: Table + Search + Export -->
+        
         <div class="col-md-6">
+            <!-- Search -->
+            <form method="get" class="d-flex mb-3">
+                <input type="text" name="SearchTerm" value="@Model.SearchTerm" placeholder="Search" class="form-control me-2" />
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </form>
+
             <h3>Class List</h3>
             <table class="table table-bordered">
                 <thead>
@@ -76,36 +77,34 @@
                 </tbody>
             </table>
 
-            <!-- Export buttons -->
-<div class="d-flex gap-2 mb-3">
-    <form method="post" asp-page-handler="Export">
-        <button type="submit" class="btn btn-primary">Export All JSON</button>
-    </form>
+            <!-- Export Buttons -->
+            <div class="d-flex gap-2 mb-3">
+                <form method="post" asp-page-handler="Export">
+                    <input type="hidden" name="PageNumber" value="@Model.PageNumber" />
+                    <button type="submit" class="btn btn-primary">Export All JSON</button>
+                </form>
 
-    <form method="post" asp-page-handler="ExportFiltered">
-        <div class="d-flex align-items-center gap-3 flex-wrap">
-            <span class="fw-semibold">Select columns to export:</span>
+                <form method="post" asp-page-handler="ExportFiltered">
+                    <input type="hidden" name="PageNumber" value="@Model.PageNumber" />
 
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="SelectedColumns" value="ClassName" checked />
-                <label class="form-check-label">Class Name</label>
+                    <div class="d-flex flex-column gap-2">
+                        <span class="fw-semibold text-white">Select columns to export:</span>
+
+                        <div class="d-flex gap-2 flex-wrap">
+                            <button type="button" class="btn btn-outline-primary toggle-column" data-column="ClassName">Class Name</button>
+                            <button type="button" class="btn btn-outline-primary toggle-column" data-column="StudentCount">Student Count</button>
+                            <button type="button" class="btn btn-outline-primary toggle-column" data-column="Description">Description</button>
+                        </div>
+
+                        <div id="selectedColumnsContainer"></div>
+
+                        <button type="submit" class="btn btn-export-filtered mt-2">Export Filtered</button>
+
+                    </div>
+                </form>
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="SelectedColumns" value="StudentCount" checked />
-                <label class="form-check-label">Student Count</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="SelectedColumns" value="Description" checked />
-                <label class="form-check-label">Description</label>
-            </div>
 
-            <button type="submit" class="btn btn-secondary">Export Filtered</button>
-        </div>
-    </form>
-</div>
-
-
-            <!-- Pagination Controls -->
+            <!-- Pagination -->
             <div class="mt-3 d-flex justify-content-between align-items-center">
                 <a asp-page="./Index"
                    asp-route-SearchTerm="@Model.SearchTerm"
@@ -114,7 +113,7 @@
                     Previous
                 </a>
 
-                <span>Page @Model.PageNumber of @Model.TotalPages</span>
+                <span class="text-white">Page @Model.PageNumber of @Model.TotalPages</span>
 
                 <a asp-page="./Index"
                    asp-route-SearchTerm="@Model.SearchTerm"
@@ -123,7 +122,7 @@
                     Next
                 </a>
             </div>
-
+            <!-- AI PROMPT: sayfa numaraları arasında geçişi nasıl sağlayabilirim-->
             @if (Model.TotalPages > 1)
             {
                 <nav>
@@ -140,3 +139,42 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        const selectedColumns = new Set(["ClassName", "StudentCount", "Description"]);
+        const container = document.getElementById("selectedColumnsContainer");
+
+        function updateHiddenInputs() {
+            container.innerHTML = "";
+            selectedColumns.forEach(col => {
+                const input = document.createElement("input");
+                input.type = "hidden";
+                input.name = "SelectedColumns";
+                input.value = col;
+                container.appendChild(input);
+            });
+        }
+
+        document.querySelectorAll(".toggle-column").forEach(btn => {
+            const col = btn.dataset.column;
+            btn.classList.add("btn-primary");
+
+            btn.addEventListener("click", () => {
+                if (selectedColumns.has(col)) {
+                    selectedColumns.delete(col);
+                    btn.classList.remove("btn-primary");
+                    btn.classList.add("btn-outline-primary");
+                } else {
+                    selectedColumns.add(col);
+                    btn.classList.add("btn-primary");
+                    btn.classList.remove("btn-outline-primary");
+                }
+
+                updateHiddenInputs();
+            });
+        });
+
+        updateHiddenInputs();
+    </script>
+}
