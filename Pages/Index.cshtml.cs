@@ -29,14 +29,14 @@ namespace Week5Lab.Pages
         [BindProperty]
         public List<string> SelectedColumns { get; set; } = new();
 
-        // ✅ Session ve Cookie bilgileri
+        // Session ve Cookie bilgileri
         public string? Username { get; set; }
         public string? SessionId { get; set; }
         public string? CookieUsername { get; set; }
 
         public IActionResult OnGet()
         {
-            // 🔐 Session ve Cookie'den kullanıcıyı al
+            // AI PROMPT:Session ve Cookie'den kullanıcıyı nasıl alabilirim
             Username = HttpContext.Session.GetString("Username");
             SessionId = HttpContext.Session.Id;
             CookieUsername = Request.Cookies["Username"];
@@ -138,7 +138,7 @@ namespace Week5Lab.Pages
         {
             HttpContext.Session.Clear();
 
-            // 🧹 Cookie'leri sil
+            // AI Prompt:Cookie'leri nasıl silebilirim
             Response.Cookies.Delete("Username");
             Response.Cookies.Delete("Token");
             Response.Cookies.Delete("SessionId");
