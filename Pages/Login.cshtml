@@ -2,25 +2,62 @@
 @model Week5Lab.Pages.LoginModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
-<div class="container mt-5">
-    <h2>Login</h2>
-
-    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
-    {
-        <div class="alert alert-danger">@Model.ErrorMessage</div>
+<style>
+    .login-wrapper {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(8px);
     }
 
-    <form method="post">
-        <div class="form-group mb-2">
-            <label>Username</label>
-            <input asp-for="Username" class="form-control" />
-        </div>
+    .login-card {
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 40px;
+        border-radius: 20px;
+        width: 100%;
+        max-width: 400px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
 
-        <div class="form-group mb-2">
-            <label>Password</label>
-            <input asp-for="Password" type="password" class="form-control" />
-        </div>
+    .login-card h2 {
+        margin-bottom: 20px;
+        text-align: center;
+        color: #333;
+    }
 
-        <button type="submit" class="btn btn-primary">Login</button>
-    </form>
+    .form-control {
+        border-radius: 10px;
+    }
+
+    .btn-login {
+        width: 100%;
+        border-radius: 10px;
+    }
+</style>
+
+<div class="login-wrapper">
+    <div class="login-card">
+        <h2>🔐 Login</h2>
+
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="alert alert-danger text-center">@Model.ErrorMessage</div>
+        }
+
+        <form method="post">
+            <div class="form-group mb-3">
+                <label>Username</label>
+                <input asp-for="Username" class="form-control" />
+            </div>
+
+            <div class="form-group mb-4">
+                <label>Password</label>
+                <input asp-for="Password" type="password" class="form-control" />
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-login">Login</button>
+        </form>
+    </div>
 </div>

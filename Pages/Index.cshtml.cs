@@ -29,16 +29,17 @@ namespace Week5Lab.Pages
         [BindProperty]
         public List<string> SelectedColumns { get; set; } = new();
 
-        // 👤 Kullanıcı oturum bilgileri
+        // ✅ Session ve Cookie bilgileri
         public string? Username { get; set; }
-        public string? Section { get; set; }
-        public string? SessionId { get; set; } // ✅ Session ID (seşin bilgisi)
+        public string? SessionId { get; set; }
+        public string? CookieUsername { get; set; }
 
         public IActionResult OnGet()
         {
+            // 🔐 Session ve Cookie'den kullanıcıyı al
             Username = HttpContext.Session.GetString("Username");
-            Section = HttpContext.Session.GetString("Section");
-            SessionId = HttpContext.Session.Id; // 👈 Session ID burada alındı
+            SessionId = HttpContext.Session.Id;
+            CookieUsername = Request.Cookies["Username"];
 
             if (string.IsNullOrEmpty(Username))
                 return RedirectToPage("/Login");
@@ -101,7 +102,7 @@ namespace Week5Lab.Pages
                 existing.StudentCount = NewClass.StudentCount;
                 existing.Description = NewClass.Description;
             }
-            return RedirectToPage();
+            return RedirectToPage(new { SearchTerm });
         }
 
         public IActionResult OnPostDelete(int id)
@@ -117,7 +118,15 @@ namespace Week5Lab.Pages
                 ClassList[i].Id = i + 1;
             }
 
-            return RedirectToPage();
+            var filteredCount = ClassList
+                .Where(c => string.IsNullOrWhiteSpace(SearchTerm) || c.ClassName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase))
+                .Count();
+
+            int totalPages = (int)Math.Ceiling(filteredCount / (double)PageSize);
+            if (PageNumber > totalPages)
+                PageNumber = totalPages;
+
+            return RedirectToPage(new { PageNumber, SearchTerm });
         }
 
         public IActionResult OnPostEdit(int id)
@@ -128,12 +137,18 @@ namespace Week5Lab.Pages
         public IActionResult OnPostLogout()
         {
             HttpContext.Session.Clear();
+
+            // 🧹 Cookie'leri sil
+            Response.Cookies.Delete("Username");
+            Response.Cookies.Delete("Token");
+            Response.Cookies.Delete("SessionId");
+
             return RedirectToPage("/Login");
         }
 
         public void SeedData()
         {
-            if (ClassList.Count >= 100) return;
+            if (ClassList.Count > 0) return;
 
             var rnd = new Random();
             for (int i = 1; i <= 100; i++)
@@ -148,10 +163,8 @@ namespace Week5Lab.Pages
             }
         }
 
-        public IActionResult OnPostExport()
+        public IActionResult OnPostExportFiltered()
         {
-            SeedData();
-
             var query = ClassList.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(SearchTerm))
@@ -164,9 +177,16 @@ namespace Week5Lab.Pages
                 .Take(PageSize)
                 .ToList();
 
-            var json = Utils.Instance.ExportToJson(paged);
+            var listForExport = paged.Select(c => new ClassInformationTable
+            {
+                ClassName = c.ClassName,
+                StudentCount = c.StudentCount,
+                Description = c.Description
+            }).ToList();
+
+            var json = Utils.Instance.ExportToJson(listForExport, SelectedColumns);
             var bytes = System.Text.Encoding.UTF8.GetBytes(json);
-            return File(bytes, "application/json", "paged_export.json");
+            return File(bytes, "application/json", "filtered_export.json");
         }
     }
 }
