@@ -91,7 +91,7 @@
                 </tbody>
             </table>
 
-            <!-- Export Bölümü -->
+            <!-- Export + Import Bölümü -->
             <div class="d-flex gap-2 mb-3">
                 <form method="post" asp-page-handler="ExportFiltered">
                     <input type="hidden" name="PageNumber" value="@Model.PageNumber" />
@@ -108,6 +108,11 @@
 
                         <button type="submit" class="btn btn-primary mt-2">Export All JSON</button>
                     </div>
+                </form>
+
+                <!-- Import JSON Butonu -->
+                <form method="post" asp-page-handler="ImportFromJsonAsync">
+                    <button type="submit" class="btn btn-warning mt-2">Import JSON to DB</button>
                 </form>
             </div>
 
