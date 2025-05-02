@@ -2,7 +2,38 @@
 @model Week5Lab.Pages.IndexModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
-<!-- Kullanıcı bilgisi gösterimi (Hem Session hem Cookie üzerinden) -->
+<style>
+    .custom-gold {
+        background-color: #34925E;
+        color: black;
+        font-weight: 500;
+        border: none;
+        border-radius: 6px;
+    }
+
+    .custom-gold:hover {
+        background-color: #34925E ;
+    }
+
+    .page-link,
+    .page-item.active .page-link {
+        background-color: white !important;
+        border-color:  white!important;
+        color: #8b4513!important;
+    }
+
+    .page-item .page-link:hover {
+        background-color: #8b4513!important;
+        border-color:  #8b4513!important;
+    }
+
+    h4 {
+        color:  #1c1c1c;
+        font-weight: 600;
+    }
+</style>
+
+<!-- Kullanıcı bilgisi gösterimi -->
 @if (Model.Username != null && Model.SessionId != null)
 {
     <div class="alert alert-success d-flex justify-content-between align-items-center">
@@ -19,31 +50,28 @@
 
 <div class="container mt-5 p-4 card-blur">
     <div class="row">
-        <!-- Left Column: Add/Edit Form -->
-        <div class="col-md-6">
-            <h3>@(Model.IsEditing ? "Edit Class" : "Add New Class")</h3>
-            <form method="post">
-                <input type="hidden" asp-for="NewClass.Id" />
-                <div class="form-group mb-2">
-                    <label>Class Name</label>
-                    <input asp-for="NewClass.ClassName" class="form-control" />
+        <!-- Left Column: Add/Edit Class -->
+        <div class="col-md-4">
+            <h4>@(Model.EditableClass.Id == 0 ? "Add New Class" : "Edit Class")</h4>
+            <form method="post" asp-page-handler="@(Model.EditableClass.Id == 0 ? "Add" : "Update")">
+                <input type="hidden" asp-for="EditableClass.Id" />
+                <div class="mb-2">
+                    <input asp-for="EditableClass.ClassName" class="form-control" placeholder="Class Name" required />
                 </div>
-                <div class="form-group mb-2">
-                    <label>Student Count</label>
-                    <input asp-for="NewClass.StudentCount" class="form-control" />
+                <div class="mb-2">
+                    <input asp-for="EditableClass.StudentCount" class="form-control" placeholder="Student Count" required />
                 </div>
-                <div class="form-group mb-2">
-                    <label>Description</label>
-                    <input asp-for="NewClass.Description" class="form-control" />
+                <div class="mb-2">
+                    <input asp-for="EditableClass.Description" class="form-control" placeholder="Description" required />
                 </div>
-                <button type="submit" asp-page-handler="@(Model.IsEditing ? "Update" : "Add")" class="btn btn-primary">
-                    @(Model.IsEditing ? "Edit Class" : "Add Class")
+                <button type="submit" class="btn custom-gold">
+                    @(Model.EditableClass.Id == 0 ? "Add Class" : "Update Class")
                 </button>
             </form>
         </div>
 
         <!-- Right Column: Table + Search + Export -->
-        <div class="col-md-6">
+        <div class="col-md-8">
             <!-- Search -->
             <form method="get" class="d-flex mb-3">
                 <input type="text" name="SearchTerm" value="@Model.SearchTerm" placeholder="Search" class="form-control me-2" />
@@ -63,27 +91,16 @@
                 <tbody>
                     @foreach (var item in Model.FilteredList)
                     {
-                        var originalItem = Week5Lab.Pages.IndexModel.ClassList.FirstOrDefault(c =>
-                            c.ClassName == item.ClassName &&
-                            c.Description == item.Description &&
-                            c.StudentCount == item.StudentCount);
-
                         <tr>
                             <td>@item.ClassName</td>
                             <td>@item.StudentCount</td>
                             <td>@item.Description</td>
                             <td>
-                                <form method="post" class="d-inline">
-                                    <input type="hidden" name="id" value="@originalItem?.Id" />
-                                    <button type="submit" asp-page-handler="Delete" class="btn btn-link text-danger p-0">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
+                                <form method="post" asp-page-handler="Edit" asp-route-id="@item.Id" style="display:inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-primary">✏️</button>
                                 </form>
-                                <form method="post" class="d-inline">
-                                    <input type="hidden" name="id" value="@originalItem?.Id" />
-                                    <button type="submit" asp-page-handler="Edit" class="btn btn-link text-primary p-0 ms-2">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
+                                <form method="post" asp-page-handler="Delete" asp-route-id="@item.Id" style="display:inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">🗑️</button>
                                 </form>
                             </td>
                         </tr>
@@ -97,22 +114,18 @@
                     <input type="hidden" name="PageNumber" value="@Model.PageNumber" />
                     <div class="d-flex flex-column gap-2">
                         <span class="fw-semibold text-white">Select columns to export:</span>
-
                         <div class="d-flex gap-2 flex-wrap">
                             <button type="button" class="btn btn-outline-primary toggle-column" data-column="ClassName">Class Name</button>
                             <button type="button" class="btn btn-outline-primary toggle-column" data-column="StudentCount">Student Count</button>
                             <button type="button" class="btn btn-outline-primary toggle-column" data-column="Description">Description</button>
                         </div>
-
                         <div id="selectedColumnsContainer"></div>
-
                         <button type="submit" class="btn btn-primary mt-2">Export All JSON</button>
                     </div>
                 </form>
 
-                <!-- Import JSON Butonu -->
-                <form method="post" asp-page-handler="ImportFromJsonAsync">
-                    <button type="submit" class="btn btn-warning mt-2">Import JSON to DB</button>
+                <form method="post" asp-page-handler="Import">
+                    <button type="submit" class="btn custom-gold mt-2">Import JSON to DB</button>
                 </form>
             </div>
 

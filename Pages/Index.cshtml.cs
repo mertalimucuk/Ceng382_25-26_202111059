@@ -1,13 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Week5Lab.Models;
+using System.Text.Json;
+using Microsoft.AspNetCore.Http;
 
+//dotnet run --project Week5Lab.csproj --urls=http://localhost:5000  hocam terminalde bu komutu girince kendi bilgisayarımda çalışıyor direkt olarak dotnet runda sorun yaşadım. bu komutu girince ilgili proje dosyam çalıştı dotnet runda sorun yaşamanız halinde bu komutu girip localhostu açabilirseniz sevinirim hocam
 namespace Week5Lab.Pages
 {
     public class IndexModel : PageModel
     {
-        public static List<ClassInformationModel> ClassList { get; set; } = new();
-        public List<ClassInformationTable> FilteredList { get; set; } = new();
+        private readonly Ceng382DbContext _db = new();
+
+        public List<ClassInformation> FilteredList { get; set; } = new();
 
         [BindProperty(SupportsGet = true)]
         public string? SearchTerm { get; set; }
@@ -19,24 +23,18 @@ namespace Week5Lab.Pages
         public int TotalPages { get; set; }
 
         [BindProperty]
-        public ClassInformationModel NewClass { get; set; } = new();
-
-        public bool IsEditing { get; set; }
-
-        [BindProperty(SupportsGet = true)]
-        public int? SelectedId { get; set; }
-
-        [BindProperty]
         public List<string> SelectedColumns { get; set; } = new();
 
-        // Session ve Cookie bilgileri
+        [BindProperty]
+        public ClassInformation EditableClass { get; set; } = new();
+
         public string? Username { get; set; }
         public string? SessionId { get; set; }
         public string? CookieUsername { get; set; }
 
+        // AI Prompt: "Check login session and load paginated, filtered class list from database"
         public IActionResult OnGet()
         {
-            // AI PROMPT:Session ve Cookie'den kullanıcıyı nasıl alabilirim
             Username = HttpContext.Session.GetString("Username");
             SessionId = HttpContext.Session.Id;
             CookieUsername = Request.Cookies["Username"];
@@ -44,149 +42,145 @@ namespace Week5Lab.Pages
             if (string.IsNullOrEmpty(Username))
                 return RedirectToPage("/Login");
 
-            SeedData();
-
-            if (SelectedId.HasValue)
-            {
-                var item = ClassList.FirstOrDefault(c => c.Id == SelectedId.Value);
-                if (item != null)
-                {
-                    NewClass = new ClassInformationModel
-                    {
-                        Id = item.Id,
-                        ClassName = item.ClassName,
-                        StudentCount = item.StudentCount,
-                        Description = item.Description
-                    };
-                    IsEditing = true;
-                }
-            }
-
-            var query = ClassList.AsQueryable();
+            var query = _db.ClassInformation.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(SearchTerm))
             {
-                query = query.Where(c => c.ClassName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase));
+                query = query.Where(c => c.ClassName.Contains(SearchTerm));
             }
 
             TotalPages = (int)Math.Ceiling(query.Count() / (double)PageSize);
 
-            var paged = query
+            FilteredList = query
                 .Skip((PageNumber - 1) * PageSize)
                 .Take(PageSize)
                 .ToList();
-
-            FilteredList = paged.Select(c => new ClassInformationTable
-            {
-                ClassName = c.ClassName,
-                StudentCount = c.StudentCount,
-                Description = c.Description
-            }).ToList();
 
             return Page();
         }
 
         public IActionResult OnPostAdd()
         {
-            NewClass.Id = ClassList.Count > 0 ? ClassList.Max(c => c.Id) + 1 : 1;
-            ClassList.Add(NewClass);
-            return RedirectToPage();
-        }
+            if (!ModelState.IsValid) return Page();
 
-        public IActionResult OnPostUpdate()
-        {
-            var existing = ClassList.FirstOrDefault(c => c.Id == NewClass.Id);
-            if (existing != null)
-            {
-                existing.ClassName = NewClass.ClassName;
-                existing.StudentCount = NewClass.StudentCount;
-                existing.Description = NewClass.Description;
-            }
-            return RedirectToPage(new { SearchTerm });
+            _db.ClassInformation.Add(EditableClass);
+            _db.SaveChanges();
+
+            return RedirectToPage();
         }
 
         public IActionResult OnPostDelete(int id)
         {
-            var item = ClassList.FirstOrDefault(c => c.Id == id);
-            if (item != null)
+            var entity = _db.ClassInformation.FirstOrDefault(c => c.Id == id);
+            if (entity != null)
             {
-                ClassList.Remove(item);
+                _db.ClassInformation.Remove(entity);
+                _db.SaveChanges();
             }
 
-            for (int i = 0; i < ClassList.Count; i++)
-            {
-                ClassList[i].Id = i + 1;
-            }
-
-            var filteredCount = ClassList
-                .Where(c => string.IsNullOrWhiteSpace(SearchTerm) || c.ClassName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase))
-                .Count();
-
-            int totalPages = (int)Math.Ceiling(filteredCount / (double)PageSize);
-            if (PageNumber > totalPages)
-                PageNumber = totalPages;
-
-            return RedirectToPage(new { PageNumber, SearchTerm });
+            return RedirectToPage();
         }
-
+        
+        // AI Prompt: "Load selected class data into EditableClass for editing"
         public IActionResult OnPostEdit(int id)
         {
-            return RedirectToPage(new { SelectedId = id });
-        }
-
-        public IActionResult OnPostLogout()
-        {
-            HttpContext.Session.Clear();
-
-            // AI Prompt:Cookie'leri nasıl silebilirim
-            Response.Cookies.Delete("Username");
-            Response.Cookies.Delete("Token");
-            Response.Cookies.Delete("SessionId");
-
-            return RedirectToPage("/Login");
-        }
-
-        public void SeedData()
-        {
-            if (ClassList.Count > 0) return;
-
-            var rnd = new Random();
-            for (int i = 1; i <= 100; i++)
+            var item = _db.ClassInformation.FirstOrDefault(c => c.Id == id);
+            if (item != null)
             {
-                ClassList.Add(new ClassInformationModel
+                EditableClass = new ClassInformation
                 {
-                    Id = i,
-                    ClassName = $"Class {i}",
-                    StudentCount = rnd.Next(10, 100),
-                    Description = $"Description for Class {i}"
-                });
+                    Id = item.Id,
+                    ClassName = item.ClassName,
+                    StudentCount = item.StudentCount,
+                    Description = item.Description
+                };
             }
+            return Page();
         }
 
+        // AI Prompt: "Update class record in the database with edited data"
+        public IActionResult OnPostUpdate()
+        {
+            var existing = _db.ClassInformation.FirstOrDefault(c => c.Id == EditableClass.Id);
+            if (existing != null)
+            {
+                existing.ClassName = EditableClass.ClassName;
+                existing.StudentCount = EditableClass.StudentCount;
+                existing.Description = EditableClass.Description;
+
+                _db.SaveChanges();
+            }
+            return RedirectToPage();
+        }
+
+        // AI Prompt: "Export the currently filtered and paginated class list as JSON"
         public IActionResult OnPostExportFiltered()
         {
-            var query = ClassList.AsQueryable();
+            var query = _db.ClassInformation.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(SearchTerm))
             {
-                query = query.Where(c => c.ClassName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase));
+                query = query.Where(c => c.ClassName.Contains(SearchTerm));
             }
 
-            var paged = query
+            var listForExport = query
                 .Skip((PageNumber - 1) * PageSize)
                 .Take(PageSize)
+                .Select(c => new ClassInformation
+                {
+                    ClassName = c.ClassName,
+                    StudentCount = c.StudentCount,
+                    Description = c.Description
+                })
                 .ToList();
-
-            var listForExport = paged.Select(c => new ClassInformationTable
-            {
-                ClassName = c.ClassName,
-                StudentCount = c.StudentCount,
-                Description = c.Description
-            }).ToList();
 
             var json = Utils.Instance.ExportToJson(listForExport, SelectedColumns);
             var bytes = System.Text.Encoding.UTF8.GetBytes(json);
             return File(bytes, "application/json", "filtered_export.json");
+        }
+
+        public async Task<IActionResult> OnPostImport()
+        {
+            Console.WriteLine("Import tetiklendi mi?");
+
+            var jsonPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "filtered_export.json");
+
+            if (!System.IO.File.Exists(jsonPath))
+            {
+                Console.WriteLine("Dosya bulunamadı.");
+                return NotFound("JSON dosyası bulunamadı.");
+            }
+
+            var jsonData = await System.IO.File.ReadAllTextAsync(jsonPath);
+            Console.WriteLine("Dosya içeriği: " + jsonData.Substring(0, Math.Min(200, jsonData.Length)));
+
+            var importedList = JsonSerializer.Deserialize<List<ClassInformation>>(jsonData);
+
+            if (importedList == null || !importedList.Any())
+            {
+                Console.WriteLine("Deserialize başarısız veya boş liste.");
+                return RedirectToPage();
+            }
+
+            foreach (var item in importedList)
+            {
+                _db.ClassInformation.Add(item);
+            }
+
+            await _db.SaveChangesAsync();
+            Console.WriteLine("✅ Import başarılı, veritabanına yazıldı.");
+
+            return RedirectToPage();
+        }
+
+        public IActionResult OnPostLogout()
+        {
+            
+            HttpContext.Session.Clear();
+            Response.Cookies.Delete("Username");
+            Response.Cookies.Delete("Token");
+            Response.Cookies.Delete("SessionId");
+            return RedirectToPage("/Login");
         }
     }
 }

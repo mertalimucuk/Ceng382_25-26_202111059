@@ -17,8 +17,8 @@ namespace Week5Lab.Models
             return JsonSerializer.Serialize(data, options);
         }
 
-        // ✅ Seçili kolonlara göre JSON export
-        public string ExportToJson(List<ClassInformationTable> data, List<string> selectedColumns)
+        // Seçili kolonlara göre JSON export (ClassInformation ile)
+        public string ExportToJson(List<ClassInformation> data, List<string> selectedColumns)
         {
             var shapedData = data.Select(item =>
             {

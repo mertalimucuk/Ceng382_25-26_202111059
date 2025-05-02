@@ -35,7 +35,7 @@ namespace Week5Lab.Pages
             var json = System.IO.File.ReadAllText(path);
             var users = JsonSerializer.Deserialize<List<User>>(json);
 
-            // 👤 Kullanıcıyı bul
+            //  Kullanıcıyı bul
             var user = users?.FirstOrDefault(u => u.Username == Username && u.Password == Password && u.IsActive);
             if (user == null)
             {
@@ -43,16 +43,16 @@ namespace Week5Lab.Pages
                 return Page();
             }
 
-            //  Token üret
+             // AI Prompt: "Generate session token and capture session ID"
             var token = Guid.NewGuid().ToString();
             var sessionId = HttpContext.Session.Id;
 
-            // Session'a kaydet
+             // AI Prompt: "Store user info and token in session variables"
             HttpContext.Session.SetString("Username", user.Username);
             HttpContext.Session.SetString("Token", token);
             HttpContext.Session.SetString("SessionId", sessionId);
 
-            // Cookie ayarları
+            // AI Prompt: "Create secure, HTTP-only cookies with session and user data"
             var options = new CookieOptions
             {
                 Expires = DateTime.UtcNow.AddMinutes(30),
@@ -66,7 +66,7 @@ namespace Week5Lab.Pages
             Response.Cookies.Append("Token", token, options);
             Response.Cookies.Append("SessionId", sessionId, options);
 
-            // 🔁 Index'e yönlendir
+            // Index'e yönlendir
             return RedirectToPage("/Index");
         }
     }

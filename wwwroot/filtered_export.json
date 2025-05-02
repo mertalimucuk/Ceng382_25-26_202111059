@@ -1,0 +1,502 @@
+[
+  {
+    "ClassName": "Augmented Reality 461",
+    "StudentCount": 20,
+    "Description": "Project Based"
+  },
+  {
+    "ClassName": "Digital Signal Processing 321",
+    "StudentCount": 57,
+    "Description": "Theory and Practice"
+  },
+  {
+    "ClassName": "IoT 479",
+    "StudentCount": 18,
+    "Description": "Performance Optimization"
+  },
+  {
+    "ClassName": "Digital Signal Processing 144",
+    "StudentCount": 56,
+    "Description": "Industrial Applications"
+  },
+  {
+    "ClassName": "Mobile App Development 240",
+    "StudentCount": 60,
+    "Description": "Security Principles"
+  },
+  {
+    "ClassName": "Operating Systems 222",
+    "StudentCount": 33,
+    "Description": "Performance Optimization"
+  },
+  {
+    "ClassName": "Game Development 440",
+    "StudentCount": 47,
+    "Description": "Performance Optimization"
+  },
+  {
+    "ClassName": "Database Systems 112",
+    "StudentCount": 48,
+    "Description": "Performance Optimization"
+  },
+  {
+    "ClassName": "Computer Networks 126",
+    "StudentCount": 54,
+    "Description": "Lab Intensive"
+  },
+  {
+    "ClassName": "Data Mining 418",
+    "StudentCount": 19,
+    "Description": "Distributed Systems"
+  },
+  {
+    "ClassName": "Augmented Reality 137",
+    "StudentCount": 42,
+    "Description": "Interactive Technologies"
+  },
+  {
+    "ClassName": "Compiler Design 492",
+    "StudentCount": 36,
+    "Description": "Introductory concepts"
+  },
+  {
+    "ClassName": "Computer Vision 223",
+    "StudentCount": 39,
+    "Description": "Advanced Techniques"
+  },
+  {
+    "ClassName": "Machine Learning 471",
+    "StudentCount": 41,
+    "Description": "Advanced Techniques"
+  },
+  {
+    "ClassName": "Natural Language Processing 182",
+    "StudentCount": 51,
+    "Description": "Introductory concepts"
+  },
+  {
+    "ClassName": "Cyber Security 129",
+    "StudentCount": 56,
+    "Description": "Introductory concepts"
+  },
+  {
+    "ClassName": "Game Development 404",
+    "StudentCount": 40,
+    "Description": "Project Based"
+  },
+  {
+    "ClassName": "Artificial Intelligence 401",
+    "StudentCount": 50,
+    "Description": "Advanced Techniques"
+  },
+  {
+    "ClassName": "Database Systems 350",
+    "StudentCount": 37,
+    "Description": "Performance Optimization"
+  },
+  {
+    "ClassName": "Web Development 429",
+    "StudentCount": 41,
+    "Description": "Interactive Technologies"
+  },
+  {
+    "ClassName": "Software Engineering 191",
+    "StudentCount": 31,
+    "Description": "Industrial Applications"
+  },
+  {
+    "ClassName": "Machine Learning 187",
+    "StudentCount": 42,
+    "Description": "Project Based"
+  },
+  {
+    "ClassName": "Computer Networks 205",
+    "StudentCount": 60,
+    "Description": "Lab Intensive"
+  },
+  {
+    "ClassName": "IoT 284",
+    "StudentCount": 48,
+    "Description": "Interactive Technologies"
+  },
+  {
+    "ClassName": "IoT 423",
+    "StudentCount": 37,
+    "Description": "Theory and Practice"
+  },
+  {
+    "ClassName": "Computer Networks 304",
+    "StudentCount": 38,
+    "Description": "Project Based"
+  },
+  {
+    "ClassName": "Game Development 325",
+    "StudentCount": 29,
+    "Description": "Interactive Technologies"
+  },
+  {
+    "ClassName": "Compiler Design 380",
+    "StudentCount": 57,
+    "Description": "Lab Intensive"
+  },
+  {
+    "ClassName": "Machine Learning 203",
+    "StudentCount": 55,
+    "Description": "Theory and Practice"
+  },
+  {
+    "ClassName": "Natural Language Processing 209",
+    "StudentCount": 59,
+    "Description": "Lab Intensive"
+  },
+  {
+    "ClassName": "Machine Learning 344",
+    "StudentCount": 48,
+    "Description": "Introductory concepts"
+  },
+  {
+    "ClassName": "Computer Networks 167",
+    "StudentCount": 52,
+    "Description": "Security Principles"
+  },
+  {
+    "ClassName": "Database Systems 494",
+    "StudentCount": 26,
+    "Description": "Introductory concepts"
+  },
+  {
+    "ClassName": "IoT 433",
+    "StudentCount": 60,
+    "Description": "Security Principles"
+  },
+  {
+    "ClassName": "Artificial Intelligence 183",
+    "StudentCount": 33,
+    "Description": "Interactive Technologies"
+  },
+  {
+    "ClassName": "Computer Vision 201",
+    "StudentCount": 56,
+    "Description": "Lab Intensive"
+  },
+  {
+    "ClassName": "Data Mining 264",
+    "StudentCount": 53,
+    "Description": "Lab Intensive"
+  },
+  {
+    "ClassName": "Cloud Computing 223",
+    "StudentCount": 30,
+    "Description": "Theory and Practice"
+  },
+  {
+    "ClassName": "Computer Networks 404",
+    "StudentCount": 31,
+    "Description": "Lab Intensive"
+  },
+  {
+    "ClassName": "Artificial Intelligence 482",
+    "StudentCount": 47,
+    "Description": "Theory and Practice"
+  },
+  {
+    "ClassName": "IoT 423",
+    "StudentCount": 55,
+    "Description": "Lab Intensive"
+  },
+  {
+    "ClassName": "Cloud Computing 105",
+    "StudentCount": 55,
+    "Description": "Security Principles"
+  },
+  {
+    "ClassName": "Data Mining 192",
+    "StudentCount": 37,
+    "Description": "Lab Intensive"
+  },
+  {
+    "ClassName": "Blockchain 418",
+    "StudentCount": 19,
+    "Description": "Advanced Techniques"
+  },
+  {
+    "ClassName": "Compiler Design 141",
+    "StudentCount": 22,
+    "Description": "Performance Optimization"
+  },
+  {
+    "ClassName": "Compiler Design 460",
+    "StudentCount": 17,
+    "Description": "Introductory concepts"
+  },
+  {
+    "ClassName": "Augmented Reality 494",
+    "StudentCount": 36,
+    "Description": "Introductory concepts"
+  },
+  {
+    "ClassName": "Natural Language Processing 410",
+    "StudentCount": 36,
+    "Description": "Industrial Applications"
+  },
+  {
+    "ClassName": "Compiler Design 192",
+    "StudentCount": 37,
+    "Description": "Lab Intensive"
+  },
+  {
+    "ClassName": "Computer Vision 251",
+    "StudentCount": 58,
+    "Description": "Project Based"
+  },
+  {
+    "ClassName": "Cyber Security 131",
+    "StudentCount": 38,
+    "Description": "Security Principles"
+  },
+  {
+    "ClassName": "IoT 479",
+    "StudentCount": 16,
+    "Description": "Industrial Applications"
+  },
+  {
+    "ClassName": "Artificial Intelligence 427",
+    "StudentCount": 41,
+    "Description": "Introductory concepts"
+  },
+  {
+    "ClassName": "Blockchain 441",
+    "StudentCount": 54,
+    "Description": "Lab Intensive"
+  },
+  {
+    "ClassName": "Cyber Security 352",
+    "StudentCount": 23,
+    "Description": "Security Principles"
+  },
+  {
+    "ClassName": "Operating Systems 487",
+    "StudentCount": 27,
+    "Description": "Theory and Practice"
+  },
+  {
+    "ClassName": "Natural Language Processing 142",
+    "StudentCount": 41,
+    "Description": "Project Based"
+  },
+  {
+    "ClassName": "Blockchain 280",
+    "StudentCount": 48,
+    "Description": "Theory and Practice"
+  },
+  {
+    "ClassName": "Database Systems 285",
+    "StudentCount": 34,
+    "Description": "Security Principles"
+  },
+  {
+    "ClassName": "Natural Language Processing 158",
+    "StudentCount": 57,
+    "Description": "Interactive Technologies"
+  },
+  {
+    "ClassName": "Augmented Reality 277",
+    "StudentCount": 17,
+    "Description": "Lab Intensive"
+  },
+  {
+    "ClassName": "Cyber Security 248",
+    "StudentCount": 60,
+    "Description": "Distributed Systems"
+  },
+  {
+    "ClassName": "Cloud Computing 335",
+    "StudentCount": 44,
+    "Description": "Security Principles"
+  },
+  {
+    "ClassName": "Operating Systems 202",
+    "StudentCount": 60,
+    "Description": "Distributed Systems"
+  },
+  {
+    "ClassName": "Web Development 119",
+    "StudentCount": 43,
+    "Description": "Introductory concepts"
+  },
+  {
+    "ClassName": "Data Mining 210",
+    "StudentCount": 54,
+    "Description": "Security Principles"
+  },
+  {
+    "ClassName": "IoT 331",
+    "StudentCount": 36,
+    "Description": "Industrial Applications"
+  },
+  {
+    "ClassName": "Database Systems 120",
+    "StudentCount": 15,
+    "Description": "Introductory concepts"
+  },
+  {
+    "ClassName": "Web Development 394",
+    "StudentCount": 40,
+    "Description": "Security Principles"
+  },
+  {
+    "ClassName": "Artificial Intelligence 108",
+    "StudentCount": 48,
+    "Description": "Performance Optimization"
+  },
+  {
+    "ClassName": "Mobile App Development 385",
+    "StudentCount": 36,
+    "Description": "Interactive Technologies"
+  },
+  {
+    "ClassName": "Cloud Computing 323",
+    "StudentCount": 57,
+    "Description": "Lab Intensive"
+  },
+  {
+    "ClassName": "Cyber Security 361",
+    "StudentCount": 39,
+    "Description": "Performance Optimization"
+  },
+  {
+    "ClassName": "Natural Language Processing 369",
+    "StudentCount": 17,
+    "Description": "Advanced Techniques"
+  },
+  {
+    "ClassName": "Mobile App Development 277",
+    "StudentCount": 41,
+    "Description": "Interactive Technologies"
+  },
+  {
+    "ClassName": "Augmented Reality 203",
+    "StudentCount": 33,
+    "Description": "Introductory concepts"
+  },
+  {
+    "ClassName": "IoT 381",
+    "StudentCount": 30,
+    "Description": "Advanced Techniques"
+  },
+  {
+    "ClassName": "Web Development 265",
+    "StudentCount": 30,
+    "Description": "Security Principles"
+  },
+  {
+    "ClassName": "Artificial Intelligence 339",
+    "StudentCount": 56,
+    "Description": "Performance Optimization"
+  },
+  {
+    "ClassName": "IoT 159",
+    "StudentCount": 42,
+    "Description": "Security Principles"
+  },
+  {
+    "ClassName": "Blockchain 322",
+    "StudentCount": 48,
+    "Description": "Performance Optimization"
+  },
+  {
+    "ClassName": "Database Systems 342",
+    "StudentCount": 44,
+    "Description": "Theory and Practice"
+  },
+  {
+    "ClassName": "Cyber Security 413",
+    "StudentCount": 53,
+    "Description": "Security Principles"
+  },
+  {
+    "ClassName": "Cloud Computing 449",
+    "StudentCount": 42,
+    "Description": "Industrial Applications"
+  },
+  {
+    "ClassName": "Big Data Analytics 275",
+    "StudentCount": 59,
+    "Description": "Industrial Applications"
+  },
+  {
+    "ClassName": "Mobile App Development 450",
+    "StudentCount": 18,
+    "Description": "Introductory concepts"
+  },
+  {
+    "ClassName": "Artificial Intelligence 373",
+    "StudentCount": 22,
+    "Description": "Interactive Technologies"
+  },
+  {
+    "ClassName": "Augmented Reality 122",
+    "StudentCount": 47,
+    "Description": "Lab Intensive"
+  },
+  {
+    "ClassName": "Machine Learning 406",
+    "StudentCount": 55,
+    "Description": "Distributed Systems"
+  },
+  {
+    "ClassName": "Web Development 369",
+    "StudentCount": 53,
+    "Description": "Theory and Practice"
+  },
+  {
+    "ClassName": "Operating Systems 158",
+    "StudentCount": 48,
+    "Description": "Advanced Techniques"
+  },
+  {
+    "ClassName": "Data Mining 340",
+    "StudentCount": 59,
+    "Description": "Distributed Systems"
+  },
+  {
+    "ClassName": "Natural Language Processing 128",
+    "StudentCount": 58,
+    "Description": "Performance Optimization"
+  },
+  {
+    "ClassName": "Machine Learning 338",
+    "StudentCount": 27,
+    "Description": "Performance Optimization"
+  },
+  {
+    "ClassName": "Cyber Security 264",
+    "StudentCount": 49,
+    "Description": "Industrial Applications"
+  },
+  {
+    "ClassName": "Natural Language Processing 469",
+    "StudentCount": 42,
+    "Description": "Security Principles"
+  },
+  {
+    "ClassName": "Machine Learning 391",
+    "StudentCount": 47,
+    "Description": "Lab Intensive"
+  },
+  {
+    "ClassName": "Operating Systems 186",
+    "StudentCount": 50,
+    "Description": "Distributed Systems"
+  },
+  {
+    "ClassName": "Big Data Analytics 291",
+    "StudentCount": 38,
+    "Description": "Advanced Techniques"
+  },
+  {
+    "ClassName": "IoT 153",
+    "StudentCount": 27,
+    "Description": "Lab Intensive"
+  }
+]

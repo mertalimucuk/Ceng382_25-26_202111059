@@ -10,32 +10,35 @@ namespace Week5Lab.Models
         {
         }
 
+        // AI Prompt: "Initialize DbContext using options passed from dependency injection"
         public Ceng382DbContext(DbContextOptions<Ceng382DbContext> options)
             : base(options)
         {
         }
 
-        /// <summary>
-        /// Represents the Students table in the database.
-        /// </summary>
+        
+        // Represents the Students table in the database.
+        // AI Prompt: "Define DbSet to represent the Students table in the database"
         public virtual DbSet<Student> Students { get; set; } = null!;
 
-        /// <summary>
-        /// Represents the ClassInformation table in the database (Week9)
-        /// </summary>
+        
+        //Represents the ClassInformation table in the database (Week9)
+        // AI Prompt: "Define DbSet for ClassInformation table that stores class-related data (used in Week9)"
         public virtual DbSet<ClassInformation> ClassInformation { get; set; } = null!;
 
+         // AI Prompt: "Configure SQL Server connection string if not already configured externally"
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                // Connection string is hardcoded here; ideally move to appsettings.json
+                // AI Prompt: "Connect to local SQL Server instance with trusted connection"
                 optionsBuilder.UseSqlServer("Server=MERT-MONSTER\\SQLEXPRESS;Database=Ceng382DB;Trusted_Connection=True;TrustServerCertificate=True;");
             }
         }
-
+        // AI Prompt: "Configure table schema details using Fluent API for entity mapping
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+             // AI Prompt: "Set primary key and column properties for Student table"
             modelBuilder.Entity<Student>(entity =>
             {
                 entity.HasKey(e => e.Id).HasName("PK_Students");
@@ -54,7 +57,7 @@ namespace Week5Lab.Models
                 entity.Property(e => e.ClassName).HasMaxLength(100);
                 entity.Property(e => e.Description).HasMaxLength(255);
             });
-
+            
             OnModelCreatingPartial(modelBuilder);
         }
 

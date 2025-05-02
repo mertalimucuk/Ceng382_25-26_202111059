@@ -3,61 +3,113 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 <style>
+    body, html {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
     .login-wrapper {
         height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
-        background: rgba(0, 0, 0, 0.5);
-        backdrop-filter: blur(8px);
+        backdrop-filter: blur(6px);
+        background: rgba(0, 0, 0, 0.4);
     }
 
     .login-card {
-        background-color: rgba(255, 255, 255, 0.9);
+        background: rgba(48, 37, 30, 0.92); /* Kahvemsi ton */
         padding: 40px;
-        border-radius: 20px;
+        border-radius: 30px;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
         width: 100%;
-        max-width: 400px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        max-width: 420px;
+        text-align: center;
+        color: #fff;
     }
 
     .login-card h2 {
-        margin-bottom: 20px;
-        text-align: center;
+        color:#ffc107 !important;
+        font-size: 26px;
+        margin-bottom: 25px;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    .form-group {
+        position: relative;
+        margin-bottom: 25px;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 12px 45px 12px 45px;
+        border-radius: 50px;
+        border: none;
+        outline: none;
+        font-size: 16px;
+        background: #fff;
         color: #333;
     }
 
-    .form-control {
-        border-radius: 10px;
+    .form-group .icon {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 15px;
+        font-size: 18px;
+        color: #888;
+    }
+
+    .form-group .icon-right {
+        left: auto;
+        right: 15px;
     }
 
     .btn-login {
+        background-color: #ffffff;
+        color: #000;
+        border: none;
+        padding: 12px;
+        font-weight: bold;
+        font-size: 16px;
         width: 100%;
-        border-radius: 10px;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-login:hover {
+        background-color: #e5e5e5;
+    }
+
+    .alert {
+        font-size: 14px;
     }
 </style>
 
 <div class="login-wrapper">
     <div class="login-card">
-        <h2>🔐 Login</h2>
+        <h2>🔐 LOGIN</h2>
 
         @if (!string.IsNullOrEmpty(Model.ErrorMessage))
         {
-            <div class="alert alert-danger text-center">@Model.ErrorMessage</div>
+            <div class="alert alert-danger">@Model.ErrorMessage</div>
         }
 
         <form method="post">
-            <div class="form-group mb-3">
-                <label>Username</label>
-                <input asp-for="Username" class="form-control" />
+            <div class="form-group">
+                <span class="icon">👤</span>
+                <input asp-for="Username" placeholder="Username" />
             </div>
 
-            <div class="form-group mb-4">
-                <label>Password</label>
-                <input asp-for="Password" type="password" class="form-control" />
+            <div class="form-group">
+                <span class="icon icon-right">🔒</span>
+                <input asp-for="Password" placeholder="Password" type="password" />
             </div>
 
-            <button type="submit" class="btn btn-primary btn-login">Login</button>
+            <button type="submit" class="btn-login">LOGIN</button>
         </form>
     </div>
 </div>

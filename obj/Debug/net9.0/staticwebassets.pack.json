@@ -21,6 +21,10 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\MERT\\Desktop\\ceng382\\Ceng382_25-26_202111059\\wwwroot\\filtered_export.json",
+      "PackagePath": "staticwebassets\\filtered_export.json"
+    },
+    {
       "Id": "C:\\Users\\MERT\\Desktop\\ceng382\\Ceng382_25-26_202111059\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },
