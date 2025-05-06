@@ -140,38 +140,50 @@ namespace Week5Lab.Pages
         }
 
         public async Task<IActionResult> OnPostImport()
+{
+    Console.WriteLine("Import tetiklendi mi?");
+
+    var jsonPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "filtered_export.json");
+
+    if (!System.IO.File.Exists(jsonPath))
+    {
+        Console.WriteLine("Dosya bulunamadı.");
+        return NotFound("JSON dosyası bulunamadı.");
+    }
+
+    var jsonData = await System.IO.File.ReadAllTextAsync(jsonPath);
+    Console.WriteLine("Dosya içeriği: " + jsonData.Substring(0, Math.Min(200, jsonData.Length)));
+
+    var importedList = JsonSerializer.Deserialize<List<ClassInformation>>(jsonData);
+
+    if (importedList == null || !importedList.Any())
+    {
+        Console.WriteLine("Deserialize başarısız veya boş liste.");
+        return RedirectToPage();
+    }
+
+    int addedCount = 0;
+
+    foreach (var item in importedList)
+    {
+        var exists = _db.ClassInformation.Any(c =>
+            c.ClassName == item.ClassName &&
+            c.StudentCount == item.StudentCount &&
+            c.Description == item.Description);
+
+        if (!exists)
         {
-            Console.WriteLine("Import tetiklendi mi?");
-
-            var jsonPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "filtered_export.json");
-
-            if (!System.IO.File.Exists(jsonPath))
-            {
-                Console.WriteLine("Dosya bulunamadı.");
-                return NotFound("JSON dosyası bulunamadı.");
-            }
-
-            var jsonData = await System.IO.File.ReadAllTextAsync(jsonPath);
-            Console.WriteLine("Dosya içeriği: " + jsonData.Substring(0, Math.Min(200, jsonData.Length)));
-
-            var importedList = JsonSerializer.Deserialize<List<ClassInformation>>(jsonData);
-
-            if (importedList == null || !importedList.Any())
-            {
-                Console.WriteLine("Deserialize başarısız veya boş liste.");
-                return RedirectToPage();
-            }
-
-            foreach (var item in importedList)
-            {
-                _db.ClassInformation.Add(item);
-            }
-
-            await _db.SaveChangesAsync();
-            Console.WriteLine("✅ Import başarılı, veritabanına yazıldı.");
-
-            return RedirectToPage();
+            _db.ClassInformation.Add(item);
+            addedCount++;
         }
+    }
+
+    await _db.SaveChangesAsync();
+    Console.WriteLine($"✅ Import tamamlandı. {addedCount} yeni kayıt eklendi.");
+
+    return RedirectToPage();
+}
+
 
         public IActionResult OnPostLogout()
         {
