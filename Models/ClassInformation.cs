@@ -6,5 +6,6 @@ namespace Week5Lab.Models
         public string ClassName { get; set; } = string.Empty;
         public int StudentCount { get; set; }
         public string Description { get; set; } = string.Empty;
+        public bool IsActive { get; set; } = true;
     }
 }
