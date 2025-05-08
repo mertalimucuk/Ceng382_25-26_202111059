@@ -43,7 +43,7 @@ namespace Week5Lab.Pages
 
             var query = _db.ClassInformation.AsQueryable();
 
-            // ✅ SADECE AKTİF VERİLER
+            // SADECE AKTİF VERİLER
             query = query.Where(c => c.IsActive);
 
             if (!string.IsNullOrWhiteSpace(SearchTerm))
@@ -65,7 +65,7 @@ namespace Week5Lab.Pages
         {
             if (!ModelState.IsValid) return Page();
 
-            // ✅ EKLENEN KAYIT OTOMATİK AKTİF
+            // EKLENEN KAYIT OTOMATİK AKTİF
             EditableClass.IsActive = true;
 
             _db.ClassInformation.Add(EditableClass);
@@ -74,7 +74,7 @@ namespace Week5Lab.Pages
             return RedirectToPage();
         }
 
-        // ✅ ARTIK GERÇEK SİLME YOK → SOFT DELETE
+         // AI Prompt: "Soft delete class by setting IsActive to false"
         public IActionResult OnPostDelete(int id)
         {
             var entity = _db.ClassInformation.FirstOrDefault(c => c.Id == id);
@@ -87,6 +87,8 @@ namespace Week5Lab.Pages
             return RedirectToPage();
         }
 
+
+         // AI Prompt: "Load class data into EditableClass for editing"
         public IActionResult OnPostEdit(int id)
         {
             var item = _db.ClassInformation.FirstOrDefault(c => c.Id == id);
@@ -117,12 +119,12 @@ namespace Week5Lab.Pages
             }
             return RedirectToPage();
         }
-
+       
         public IActionResult OnPostExportFiltered()
         {
             var query = _db.ClassInformation.AsQueryable();
 
-            // ✅ SADECE AKTİF VERİLERİ EXPORT ET
+            // SADECE AKTİF VERİLERİ EXPORT ET
             query = query.Where(c => c.IsActive);
 
             if (!string.IsNullOrWhiteSpace(SearchTerm))
@@ -146,6 +148,7 @@ namespace Week5Lab.Pages
             return File(bytes, "application/json", "filtered_export.json");
         }
 
+         // AI Prompt: "Import JSON file and insert non-duplicate class records"
         public async Task<IActionResult> OnPostImport()
         {
             Console.WriteLine("Import tetiklendi mi?");
@@ -180,14 +183,14 @@ namespace Week5Lab.Pages
 
                 if (!exists)
                 {
-                    item.IsActive = true; // ✅ İMPORT EDİLEN KAYIT DA AKTİF
+                    item.IsActive = true; // İMPORT EDİLEN KAYIT DA AKTİF
                     _db.ClassInformation.Add(item);
                     addedCount++;
                 }
             }
 
             await _db.SaveChangesAsync();
-            Console.WriteLine($"✅ Import tamamlandı. {addedCount} yeni kayıt eklendi.");
+            Console.WriteLine($"Import tamamlandı. {addedCount} yeni kayıt eklendi.");
 
             return RedirectToPage();
         }

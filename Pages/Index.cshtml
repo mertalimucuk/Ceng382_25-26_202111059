@@ -12,47 +12,44 @@
     }
 
     .custom-gold:hover {
-        background-color: #34925E ;
+        background-color: #34925E;
     }
 
     .page-link,
     .page-item.active .page-link {
         background-color: white !important;
-        border-color:  white!important;
-        color: #8b4513!important;
+        border-color: white !important;
+        color: #8b4513 !important;
     }
 
     .page-item .page-link:hover {
-        background-color: #8b4513!important;
-        border-color:  #8b4513!important;
+        background-color: #8b4513 !important;
+        border-color: #8b4513 !important;
     }
 
     h4 {
-        color:  #1c1c1c;
         font-weight: 600;
     }
 </style>
 
-<!-- Kullanıcı bilgisi gösterimi -->
-@if (Model.Username != null && Model.SessionId != null)
-{
-    <div class="alert alert-success d-flex justify-content-between align-items-center">
-        <div>
-            👤 <strong>@Model.Username</strong> | 
-            Session ID: <code>@Model.SessionId</code><br />
-            🍪 Cookie Username: <strong>@Model.CookieUsername</strong>
-        </div>
-        <form method="post" asp-page-handler="Logout" class="mb-0">
-            <button type="submit" class="btn btn-sm btn-outline-danger">Logout</button>
-        </form>
+@*
+<div class="alert alert-success d-flex justify-content-between align-items-center">
+    <div>
+        👤 <strong>@Model.Username</strong> | 
+        Session ID: <code>@Model.SessionId</code><br />
+        🍪 Cookie Username: <strong>&commat;Model.CookieUsername</strong>
     </div>
-}
+    <form method="post" asp-page-handler="Logout" class="mb-0">
+        <button type="submit" class="btn btn-sm btn-outline-danger">Logout</button>
+    </form>
+</div>
+*@
 
 <div class="container mt-5 p-4 card-blur">
     <div class="row">
-        <!-- Left Column: Add/Edit Class -->
+        <!-- Left: Add/Edit Form -->
         <div class="col-md-4">
-            <h4>@(Model.EditableClass.Id == 0 ? "Add New Class" : "Edit Class")</h4>
+            <h4 class="text-white">@(Model.EditableClass.Id == 0 ? "Add New Class" : "Edit Class")</h4>
             <form method="post" asp-page-handler="@(Model.EditableClass.Id == 0 ? "Add" : "Update")">
                 <input type="hidden" asp-for="EditableClass.Id" />
                 <div class="mb-2">
@@ -70,15 +67,16 @@
             </form>
         </div>
 
-        <!-- Right Column: Table + Search + Export -->
+        <!-- Right: Search + Table + Export -->
         <div class="col-md-8">
+            <h3 class="mb-3">Class List</h3>
+
             <!-- Search -->
             <form method="get" class="d-flex mb-3">
                 <input type="text" name="SearchTerm" value="@Model.SearchTerm" placeholder="Search" class="form-control me-2" />
                 <button type="submit" class="btn btn-primary">Filter</button>
             </form>
 
-            <h3>Class List</h3>
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -108,7 +106,7 @@
                 </tbody>
             </table>
 
-            <!-- Export + Import Bölümü -->
+            <!-- Export -->
             <div class="d-flex gap-2 mb-3">
                 <form method="post" asp-page-handler="ExportFiltered">
                     <input type="hidden" name="PageNumber" value="@Model.PageNumber" />
@@ -122,10 +120,6 @@
                         <div id="selectedColumnsContainer"></div>
                         <button type="submit" class="btn btn-primary mt-2">Export All JSON</button>
                     </div>
-                </form>
-
-                <form method="post" asp-page-handler="Import">
-                    <button type="submit" class="btn custom-gold mt-2">Import JSON to DB</button>
                 </form>
             </div>
 
