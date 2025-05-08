@@ -19,9 +19,18 @@
 
 <div class="container mt-5 p-4 card-blur">
     <div class="row">
+        <!-- Başlıklar hizalı ve üstte -->
+        <div class="col-md-6">
+            <h3 class="mb-4">Add New Class</h3>
+        </div>
+        <div class="col-md-6">
+            <h3 class="mb-4">Class List</h3>
+        </div>
+    </div>
+
+    <div class="row">
         <!-- Left Column: Add/Edit Form -->
         <div class="col-md-6">
-            <h3>@(Model.IsEditing ? "Edit Class" : "Add New Class")</h3>
             <form method="post">
                 <input type="hidden" asp-for="NewClass.Id" />
                 <div class="form-group mb-2">
@@ -50,7 +59,6 @@
                 <button type="submit" class="btn btn-primary">Filter</button>
             </form>
 
-            <h3>Class List</h3>
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -137,7 +145,7 @@
                         @for (int i = 1; i <= Model.TotalPages; i++)
                         {
                             <li class="page-item @(Model.PageNumber == i ? "active" : "")">
-                                <a class="page-link" href="?PageNumber=@i&SearchTerm=@Model.SearchTerm">@i</a>
+                                <a class="page-link" style="background-color: #8b4513; color: white; border: none; margin: 0 2px;" href="?PageNumber=@i&SearchTerm=@Model.SearchTerm">@i</a>
                             </li>
                         }
                     </ul>

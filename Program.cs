@@ -3,10 +3,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-// ✅ SESSION EKLENTİSİ
+// SESSION EKLENTİSİ
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(1); // ⏳ 1 dakikalık session
+    options.IdleTimeout = TimeSpan.FromMinutes(20); 
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
@@ -25,7 +25,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// ✅ SESSION’I KULLAN
+// SESSION’I KULLAN
 app.UseSession();
 
 app.UseAuthorization();
@@ -34,5 +34,5 @@ app.MapRazorPages();
 
 app.Run();
 
-builder.Services.AddSession(); // ✨
-app.UseSession();              // ✨
+builder.Services.AddSession(); // 
+app.UseSession();              // 
