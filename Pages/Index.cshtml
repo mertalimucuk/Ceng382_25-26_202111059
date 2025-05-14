@@ -12,37 +12,35 @@
     }
 
     .custom-gold:hover {
-        background-color: #34925E ;
+        background-color: #34925E;
     }
 
     .page-link,
     .page-item.active .page-link {
         background-color: white !important;
-        border-color:  white!important;
-        color: #8b4513!important;
+        border-color: white !important;
+        color: #8b4513 !important;
     }
 
     .page-item .page-link:hover {
-        background-color: #8b4513!important;
-        border-color:  #8b4513!important;
+        background-color: #8b4513 !important;
+        border-color: #8b4513 !important;
     }
 
     h4 {
-        color:  #1c1c1c;
+        color: #1c1c1c;
         font-weight: 600;
     }
 </style>
 
-<!-- Kullanıcı bilgisi gösterimi -->
-@if (Model.Username != null && Model.SessionId != null)
+<!-- ✅ Kullanıcı bilgisi gösterimi (sadece Username üzerinden) -->
+@if (Model.Username != null)
 {
     <div class="alert alert-success d-flex justify-content-between align-items-center">
         <div>
-            👤 <strong>@Model.Username</strong> | 
-            Session ID: <code>@Model.SessionId</code><br />
-            🍪 Cookie Username: <strong>@Model.CookieUsername</strong>
+            👤 <strong>@Model.Username</strong>
         </div>
-        <form method="post" asp-page-handler="Logout" class="mb-0">
+        <form method="post" asp-page="/Identity/Account/Logout">
             <button type="submit" class="btn btn-sm btn-outline-danger">Logout</button>
         </form>
     </div>
@@ -203,3 +201,4 @@
         updateHiddenInputs();
     </script>
 }
+

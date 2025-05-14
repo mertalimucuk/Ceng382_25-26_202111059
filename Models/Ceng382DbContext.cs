@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Week5Lab.Models;
 
 namespace Week5Lab.Models
 {
-    public partial class Ceng382DbContext : DbContext
+    // AI Prompt: "Inherit from IdentityDbContext to support ASP.NET Core Identity"
+    public partial class Ceng382DbContext : IdentityDbContext<ApplicationUser>
     {
         public Ceng382DbContext()
         {
@@ -16,17 +19,15 @@ namespace Week5Lab.Models
         {
         }
 
-        
         // Represents the Students table in the database.
         // AI Prompt: "Define DbSet to represent the Students table in the database"
         public virtual DbSet<Student> Students { get; set; } = null!;
 
-        
         //Represents the ClassInformation table in the database (Week9)
         // AI Prompt: "Define DbSet for ClassInformation table that stores class-related data (used in Week9)"
         public virtual DbSet<ClassInformation> ClassInformation { get; set; } = null!;
 
-         // AI Prompt: "Configure SQL Server connection string if not already configured externally"
+        // AI Prompt: "Configure SQL Server connection string if not already configured externally"
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -35,10 +36,13 @@ namespace Week5Lab.Models
                 optionsBuilder.UseSqlServer("Server=MERT-MONSTER\\SQLEXPRESS;Database=Ceng382DB;Trusted_Connection=True;TrustServerCertificate=True;");
             }
         }
-        // AI Prompt: "Configure table schema details using Fluent API for entity mapping
+
+        // AI Prompt: "Configure table schema details using Fluent API for entity mapping"
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-             // AI Prompt: "Set primary key and column properties for Student table"
+            base.OnModelCreating(modelBuilder); // AI Prompt: "Call base.OnModelCreating to configure identity tables"
+
+            // AI Prompt: "Set primary key and column properties for Student table"
             modelBuilder.Entity<Student>(entity =>
             {
                 entity.HasKey(e => e.Id).HasName("PK_Students");
@@ -57,7 +61,7 @@ namespace Week5Lab.Models
                 entity.Property(e => e.ClassName).HasMaxLength(100);
                 entity.Property(e => e.Description).HasMaxLength(255);
             });
-            
+
             OnModelCreatingPartial(modelBuilder);
         }
 
